@@ -13,5 +13,14 @@ def cluster_sampling(size, df, x, y, num_samples):
     count = 0
 
     if size > df.size/num_samples:
-        raise Exception("For the given size the number of samples needed can not be made out of the data frame ") 
+        raise Exception("For the given size the number of samples needed can not be made out of the data frame ")
 
+
+#same size no repeats --> size of the sample, data frame, x - column header, y row header, number samples
+# return an array of the samples
+#same size yes repeats
+
+# different size (random) --> number of samples, range of size, data frame,  x - column header, y row header
+# different size (random) with repeats
+# return an array of the samples
+# stratfied - how we will approach
