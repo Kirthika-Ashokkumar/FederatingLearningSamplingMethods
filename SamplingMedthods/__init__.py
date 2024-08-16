@@ -88,12 +88,8 @@ def different_random_samples_w_repeats(df_train, min_size, max_size, samplesX, s
     return samplesy.size
 
 
-
-#same size no repeats --> size of the sample, data frame, x - column header, y row header, number samples
-# return an array of the samples
-#same size yes repeats
-
-# different size (random) --> number of samples, range of size, data frame,  x - column header, y row header
-# different size (random) with repeats
-# return an array of the samples
-# stratfied - how we will approach
+# 1. Find new Data bases - S
+# 2. Figure out how to work the library - K
+# 3. Make a few new functions to use w multiple databases:
+    # K - cluster_sampling
+    # S - random
