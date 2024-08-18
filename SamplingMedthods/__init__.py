@@ -9,13 +9,21 @@ def cluster_sampling(size, df_train, num_samples, samplesX, samplesy, X_header, 
     if size > df_train.size/num_samples:
         raise Exception("For the given size the number of samples needed can not be made out of the data frame ")
     
-    samps = np.array_split(shuffle, size)
+    incr = size
+    beginIdx = 0
+    nextIdx = beginIdx + incr
+
+    X = np.array(shuffle[X_header])
+    y = np.array(shuffle[y_header])
 
     for i in range(num_samples):
-        samplesX.append(np.array(samps[i][X_header]))
-        samplesy.append(np.array(samps[i][y_header]))
+        samplesX.append(X[beginIdx:nextIdx])
+        samplesy.append(y[beginIdx:nextIdx])
+        beginIdx = nextIdx
+        nextIdx = beginIdx + incr
 
-    return samps[0:num_samples]
+    return len(samplesX)
+
 
 def cluster_sampling_w_repeats(df_train, num_samples, fraction, samplesX, samplesy, X_header, y_header):
     shuffle = df_train.sample(frac = 1)
@@ -30,6 +38,7 @@ def cluster_sampling_w_repeats(df_train, num_samples, fraction, samplesX, sample
         samplesy.append(np.array(samps[i][y_header]))
     
     return samps[0:num_samples]
+
 
 def different_random_samples(df_train, min_size, max_size, samplesX, samplesy, X_header, y_header):
     
@@ -47,20 +56,22 @@ def different_random_samples(df_train, min_size, max_size, samplesX, samplesy, X
     X = np.array(df_train[X_header])
     y = np.array(df_train[y_header])
 
-    while (nextIdx < df_train.size):
+    while (nextIdx < len(df_train)):
         samplesX.append(X[beginIdx:nextIdx])
         samplesy.append(y[beginIdx:nextIdx])
         count = count+1
         beginIdx = nextIdx
         nextIdx = beginIdx + random.randint(min_size, max_size)
 
-    if (df_train.size-nextIdx > 10):
+    if (len(df_train) - nextIdx > 10):
         samplesX.append(X[nextIdx:df_train.size])
         samplesy.append(y[nextIdx:df_train.size])
+  
 
-    return samplesy.size
+    return len(samplesy)
+
     
-def different_random_samples_w_repeats(df_train, min_size, max_size, samplesX, samplesy, X_header, y_header):
+def different_random_samples_w_repeats(df_train, min_size, max_size, num_samples, samplesX, samplesy, X_header, y_header):
     
     if (min_size < 0 or max_size > df_train.size):
         raise Exception("Min size cannot be negative and max size cannot be bigger than df")
@@ -68,15 +79,19 @@ def different_random_samples_w_repeats(df_train, min_size, max_size, samplesX, s
     # shuffle = df_train.sample(frac = 1)
     # samps = []
     count = 0
-    num_rows = df_train.size #added
+    num_rows = len(df_train) #added
 
     X = np.array(df_train[X_header])
     y = np.array(df_train[y_header])
-
-    while (samplesX.size < df_train.size):
-        beginIdx = random.randint(0, num_rows - min_size) #modified
+    
+    while (count < num_samples):
+        beginIdx = random.randint(0, num_rows)
         sample_size = random.randint(min_size, max_size) #added
         endIdx = min(beginIdx + sample_size, num_rows)
+        while( endIdx - beginIdx <  min_size):
+           beginIdx = random.randint(0, num_rows)
+           sample_size = random.randint(min_size, max_size) #added
+           endIdx = min(beginIdx + sample_size, num_rows)
         samplesX.append(X[beginIdx:endIdx])
         samplesy.append(y[beginIdx:endIdx])
         count = count+1
@@ -85,8 +100,7 @@ def different_random_samples_w_repeats(df_train, min_size, max_size, samplesX, s
       #  samplesX.append(X[nextIdx:df_train.size])
       #  samplesy.append(y[nextIdx:df_train.size])
 
-    return samplesy.size
-
+    return len(samplesy)
 
 # 1. Find new Data bases - S
 # 2. Figure out how to work the library - K
