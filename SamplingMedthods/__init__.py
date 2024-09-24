@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import random
 
-def cluster_sampling(size, df_train, num_samples, samplesX, samplesy, X_header, y_header):
+def cluster_sampling (df_train, size, num_samples, samplesX, samplesy, X_header, y_header):
     shuffle = df_train.sample(frac = 1)
 
     if size > len(df_train)/num_samples:
@@ -97,7 +96,6 @@ def different_random_samples_w_repeats(df_train, min_size, max_size, num_samples
     return len(samplesy)
 
 def split_by_variable(df_train, column, variables, samplesX, samplesy, X_header, y_header):
-  
     for i in range(len(variables)):
         filt = (df_train[column] == variables[i])
         df_filt = df_train[filt]

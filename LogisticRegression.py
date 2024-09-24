@@ -38,7 +38,7 @@ class LogisticRegression():
     class_pred = [0 if y<=0.5 else 1 for y in y_pred]
     return class_pred
 
-
+#function on server
 def predict_Average(x, list_w, list_b):
     n_samples, n_features = x.shape
     sumW=np.zeros(n_features)
