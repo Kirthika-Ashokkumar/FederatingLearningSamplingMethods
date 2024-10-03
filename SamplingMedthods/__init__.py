@@ -103,3 +103,15 @@ def split_by_variable(df_train, column, variables, samplesX, samplesy, X_header,
         samplesX.append( np.array(shuffle[X_header]))
         samplesy.append( np.array(shuffle[y_header]))
 
+def stratified_sampling_n_cluster_sampling(df_train, size, column, variables, num_samples, samplesX, samplesy, X_header, y_header): # split_by_variable & cluster_sampling
+    split_by_variable(df_train, column, variables, samplesX, samplesy, X_header, y_header)
+
+    combo_X = np.concatenate(samplesX, axis=0)
+    combo_y = np.concatenate(samplesy, axis=0)
+
+    combo_df = pd.DataFrame(np.column_stack([combo_X, combo_y]), columns=(X_header + y_header))
+
+    samplesX_cluster, samplesy_cluster = [], []
+    cluster_sampling(combo_df, size, num_samples, samplesX_cluster, samplesy_cluster, X_header, y_header)
+
+    return samplesX_cluster, samplesy_cluster
