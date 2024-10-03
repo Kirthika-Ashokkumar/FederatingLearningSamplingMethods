@@ -66,7 +66,6 @@ def different_random_samples(df_train, min_size, max_size, samplesX, samplesy, X
   
 
     return len(samplesy)
-
     
 def different_random_samples_w_repeats(df_train, min_size, max_size, num_samples, samplesX, samplesy, X_header, y_header):
     
@@ -114,4 +113,4 @@ def stratified_sampling_n_cluster_sampling(df_train, size, column, variables, nu
     samplesX_cluster, samplesy_cluster = [], []
     cluster_sampling(combo_df, size, num_samples, samplesX_cluster, samplesy_cluster, X_header, y_header)
 
-    return samplesX_cluster, samplesy_cluster
+    return len(samplesX_cluster)
